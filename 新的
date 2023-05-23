@@ -1,2 +1,0 @@
-apt update -y
-apt install wget curl sudo vim git -y
