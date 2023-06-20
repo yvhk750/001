@@ -11,8 +11,9 @@ systemctl stop caddy
 配置重载
 systemctl reload caddy
 服务状态
-systemctl daemon-reload
-
+systemctl status caddy
+格式CADDY
+caddy fmt /etc/caddy/Caddyfile --overwrite
 
 证书路径
 /var/lib/caddy/.local/share/caddy/certificates/acme-v02.api.letsencrypt.org-directory目录下
