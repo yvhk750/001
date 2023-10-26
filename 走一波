@@ -15,12 +15,6 @@ wget https://raw.githubusercontent.com/yvhk750/SSHKEY/master/key.sh --no-check-c
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 
-安装哪吒监控 docker
-curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh &&  ./nezha.sh
-
-Freenom 域名自动续期
-docker run -d --name freenom --restart always -v $(pwd):/conf -v $(pwd)/logs:/app/logs luolongfei/freenom
-
 安装 alist
 curl -fsSL "https://alist.nn.ci/v3.sh" | bash -s install  
 更新
@@ -30,6 +24,9 @@ curl -fsSL "https://alist.nn.ci/v3.sh" | bash -s uninstall
 
 alist+arist(本地目录设置位置 /opt/alist/data/abc )
 docker run -d --restart=always -v /etc/alist:/opt/alist/data -p 5244:5244 -e PUID=0 -e PGID=0 -e UMASK=022 --name="alist" xhofe/alist-aria2:latest
+
+# 手动设置一个密码,`NEW_PASSWORD`是指你需要设置的密码
+docker exec -it alist ./alist admin set NEW_PASSWORD
 
 x-ui三个版本
 bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
