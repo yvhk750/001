@@ -23,7 +23,7 @@ curl -fsSL "https://alist.nn.ci/v3.sh" | bash -s update
 curl -fsSL "https://alist.nn.ci/v3.sh" | bash -s uninstall
 
 alist+arist(本地目录设置位置 /opt/alist/data/abc )
-docker run -d --restart=always -v /etc/alist:/opt/alist/data -p 5244:5244 -e PUID=0 -e PGID=0 -e UMASK=022 --name="alist" xhofe/alist-aria2:latest
+docker run -d --restart=always -v /etc/alist:/opt/alist/data -v /mnt:/mnt -p 5244:5244 -e PUID=0 -e PGID=0 -e UMASK=022 --name="alist" xhofe/alist-aria2:latest
 
 # 手动设置一个密码,`NEW_PASSWORD`是指你需要设置的密码
 docker exec -it alist ./alist admin set NEW_PASSWORD
