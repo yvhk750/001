@@ -28,13 +28,5 @@ docker run -d --restart=always -v /etc/alist:/opt/alist/data -v /mnt:/mnt -p 524
 # 手动设置一个密码,`NEW_PASSWORD`是指你需要设置的密码
 docker exec -it alist ./alist admin set NEW_PASSWORD
 
-x-ui三个版本
-bash <(curl -Ls https://raw.githubusercontent.com/vaxilu/x-ui/master/install.sh)
-bash <(curl -Ls https://raw.githubusercontent.com/FranzKafkaYu/x-ui/master/install.sh)
-bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
-
 caddy
-wget https://github.com/caddyserver/caddy/releases/download/v2.7.5/caddy_2.7.5_linux_amd64.deb
-安装   dpkg -i caddy_2.7.5_linux_amd64.deb
-查看安装包内容   dpkg -c
-
+wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/nt.sh && bash nt.sh
