@@ -67,29 +67,29 @@ installProxy(){
     wget https://github.com/lxhao61/integrated-examples/releases/download/20231208/caddy-linux-$(archAffix).tar.gz 
 	tar zxvf caddy-linux-$(archAffix).tar.gz
 	chmod +x caddy
-    mv caddy /usr/bin/
+        mv caddy /usr/bin/
 
     mkdir /etc/caddy
     
-    read -rp "请输入需要用在 NaiveProxy 的端口 [回车随机分配端口]：" proxyport
+    read -rp "请输入需要用在 NaiveProxy和trojan 的端口 [回车随机分配端口]：" proxyport
     [[ -z $proxyport ]] && proxyport=$(shuf -i 2000-65535 -n 1)
     until [[ -z $(ss -ntlp | awk '{print $4}' | sed 's/.*://g' | grep -w "$proxyport") ]]; do
         if [[ -n $(ss -ntlp | awk '{print $4}' | sed 's/.*://g' | grep -w "$proxyport") ]]; then
             echo -e "${RED} $proxyport ${PLAIN} 端口已经被其他程序占用，请更换端口重试！"
-            read -rp "请输入需要用在NaiveProxy的端口 [回车随机分配端口]：" proxyport
+            read -rp "请输入需要用在NaiveProxy和trojan的端口 [回车随机分配端口]：" proxyport
             [[ -z $proxyport ]] && proxyport=$(shuf -i 2000-65535 -n 1)
         fi
     done
-    yellow "将在 NaiveProxy 节点使用的端口是：$proxyport"
+    yellow "将在 NaiveProxy和trojan 节点使用的端口是：$proxyport"
     
-    read -rp "请输入需要使用在 NaiveProxy 的域名：" domain
-    yellow "使用在 NaiveProxy 节点的域名为：$domain"
+    read -rp "请输入需要使用在 NaiveProxy和trojan 的域名：" domain
+    yellow "使用在 NaiveProxy和trojan 节点的域名为：$domain"
 
     read -rp "请输入 NaiveProxy 的用户名 [回车随机生成]：" proxyname
     [[ -z $proxyname ]] && proxyname=$(date +%s%N | md5sum | cut -c 1-16)
     yellow "使用在 NaiveProxy 节点的用户名为：$proxyname"
 
-    read -rp "请输入 NaiveProxy 的密码 [回车随机生成]：" proxypwd
+    read -rp "请输入 NaiveProxy和trojan 的密码 [回车随机生成]：" proxypwd
     [[ -z $proxypwd ]] && proxypwd=$(date +%s%N | md5sum | cut -c 1-16)
     yellow "使用在 NaiveProxy 节点的密码为：$proxypwd"
 
@@ -157,7 +157,7 @@ EOF
     mkdir /root/naive
     cat <<EOF > /root/naive/naive-client.json
 {
-  "listen": "socks://127.0.0.1:4080",
+  "listen": "socks://127.0.0.1:1080",
   "proxy": "https://${proxyname}:${proxypwd}@${domain}:${proxyport}",
   "log": ""
 }
