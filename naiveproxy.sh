@@ -81,17 +81,6 @@ installProxy(){
         fi
     done
     yellow "将在 NaiveProxy 节点使用的端口是：$proxyport"
-
-    read -rp "请输入需要用在 Caddy 监听的端口 [回车随机分配端口]：" caddyport
-    [[ -z $caddyport ]] && caddyport=$(shuf -i 2000-65535 -n 1)
-    until [[ -z $(ss -ntlp | awk '{print $4}' | sed 's/.*://g' | grep -w "$caddyport") ]]; do
-        if [[ -n $(ss -ntlp | awk '{print $4}' | sed 's/.*://g' | grep -w "$caddyport") ]]; then
-            echo -e "${RED} $proxyport ${PLAIN} 端口已经被其他程序占用，请更换端口重试！"
-            read -rp "请输入需要用在Caddy监听的端口 [回车随机分配端口]：" caddyport
-            [[ -z $caddyport ]] && caddyport=$(shuf -i 2000-65535 -n 1)
-        fi
-    done
-    yellow "将用在 Caddy 监听的端口是：$caddyport"
     
     read -rp "请输入需要使用在 NaiveProxy 的域名：" domain
     yellow "使用在 NaiveProxy 节点的域名为：$domain"
@@ -119,7 +108,7 @@ installProxy(){
 	} 
 	email tang860622@gmail.com 
 
-	servers :443 {
+	servers :$proxyport {
 		listener_wrappers {
 			trojan 
 		}
@@ -131,7 +120,7 @@ installProxy(){
 	}
 }
 
-:443, $proxysite { 
+:$proxyport, $domain { 
 	tls {
 		ciphers TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
 		curves x25519 secp521r1 secp384r1 secp256r1
@@ -150,7 +139,7 @@ installProxy(){
 	} 
 
 	@host {
-		host $proxysite
+		host $domain
 	}
 	route @host {
 		header {
