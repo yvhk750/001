@@ -64,8 +64,8 @@ installProxy(){
     ${PACKAGE_INSTALL[int]} curl wget sudo qrencode
 
     rm -f /usr/bin/caddy
-    wget https://github.com/lxhao61/integrated-examples/releases/download/20231208/caddy-linux-$(archAffix) 
-	tar zxvf caddy-linux-$(archAffix)
+    wget https://github.com/lxhao61/integrated-examples/releases/download/20231208/caddy-linux-$(archAffix).tar.gz 
+	tar zxvf caddy-linux-$(archAffix).tar.gz
 	chmod +x caddy
     mv caddy /usr/bin/
 
@@ -110,22 +110,59 @@ installProxy(){
     
     cat << EOF >/etc/caddy/Caddyfile
 {
-http_port $caddyport
+	order trojan before route
+	order forward_proxy before trojan
+	admin off
+	log {
+		output file /var/log/caddy/error.log
+		level ERROR
+	} 
+	email tang860622@gmail.com 
+
+	servers :443 {
+		listener_wrappers {
+			trojan 
+		}
+	}
+	trojan {
+		caddy
+		no_proxy
+		users $proxypwd
+	}
 }
-:$proxyport, $domain:$proxyport
-tls admin@seewo.com
-route {
- forward_proxy {
-   basic_auth $proxyname $proxypwd
-   hide_ip
-   hide_via
-   probe_resistance
-  }
- reverse_proxy  https://$proxysite  {
-   header_up  Host  {upstream_hostport}
-   header_up  X-Forwarded-Host  {host}
-  }
+
+:443, $proxysite { 
+	tls {
+		ciphers TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+		curves x25519 secp521r1 secp384r1 secp256r1
+	}
+
+	forward_proxy {
+		basic_auth $proxyname $proxypwd 
+		hide_ip
+		hide_via
+		probe_resistance
+	}
+
+	trojan {
+		connect_method
+		websocket
+	} 
+
+	@host {
+		host $proxysite
+	}
+	route @host {
+		header {
+			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" 
+		}
+		 reverse_proxy  https://$proxysite  {
+          header_up  Host  {upstream_hostport}
+           header_up  X-Forwarded-Host  {host}
+         }   
+	}
 }
+
 EOF
 
     mkdir /root/naive
