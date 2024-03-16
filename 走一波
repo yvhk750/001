@@ -11,6 +11,9 @@ sysctl -p
 安装ssh 端口52022
 wget https://github.com/yvhk750/001/raw/main/key.sh --no-check-certificate&& bash key.sh yvhk750
 
+caddy NaiveProxy 与 Trojan（支持CF优选IP） 
+wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/nt.sh && bash nt.sh
+
 安装 docker
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
@@ -28,5 +31,4 @@ docker run -d --restart=always -v /etc/alist:/opt/alist/data -v /mnt:/mnt -p 524
 # 手动设置一个密码,`NEW_PASSWORD`是指你需要设置的密码
 docker exec -it alist ./alist admin set NEW_PASSWORD
 
-caddy NaiveProxy 与 Trojan（支持CF优选IP） 
-wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/nt.sh && bash nt.sh
+
