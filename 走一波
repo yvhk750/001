@@ -9,7 +9,7 @@ echo "net.ipv4.icmp_echo_ignore_all=1" >> /etc/sysctl.conf
 sysctl -p
 
 安装ssh 
-wget https://raw.githubusercontent.com/yvhk750/SSHKEY/master/key.sh --no-check-certificate&& bash key.sh yvhk750
+wget https://github.com/yvhk750/001/raw/main/key.sh --no-check-certificate&& bash key.sh yvhk750
 
 安装 docker
 curl -fsSL https://get.docker.com -o get-docker.sh
