@@ -120,7 +120,7 @@ installProxy(){
 	}
 }
 
-:$proxyport, $domain { 
+:$proxyport, $domain:$proxyport { 
 	tls {
 		ciphers TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
 		curves x25519 secp521r1 secp384r1 secp256r1
