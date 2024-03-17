@@ -332,14 +332,10 @@ showconf(){
 menu(){
     clear
     echo "#############################################################"
-    echo -e "#                  ${RED}NaiveProxy  一键配置脚本${PLAIN}                 #"
-    echo -e "# ${GREEN}作者${PLAIN}: MisakaNo の 小破站                                  #"
-    echo -e "# ${GREEN}博客${PLAIN}: https://blog.misaka.rest                            #"
-    echo -e "# ${GREEN}GitHub 项目${PLAIN}: https://github.com/Misaka-blog               #"
-    echo -e "# ${GREEN}GitLab 项目${PLAIN}: https://gitlab.com/Misaka-blog               #"
-    echo -e "# ${GREEN}Telegram 频道${PLAIN}: https://t.me/misakanocchannel              #"
-    echo -e "# ${GREEN}Telegram 群组${PLAIN}: https://t.me/misakanoc                     #"
-    echo -e "# ${GREEN}YouTube 频道${PLAIN}: https://www.youtube.com/@misaka-blog        #"
+    echo -e "#    ${RED}基于 Caddy 插件的 NaiveProxy 与 Trojan-Go 共存应用${PLAIN}        #"
+    echo -e "#                   ${GREEN}小白自用瞎改${PLAIN}                            #"
+    echo -e "# ${GREEN}一键脚本${PLAIN}: https://github.com/Misaka-blog                  #"
+    echo -e "# ${GREEN}Caddy(N+T)${PLAIN}: https://github.com/lxhao61                   #"
     echo "#############################################################"
     echo ""
     echo -e " ${GREEN}1.${PLAIN} 安装 NaiveProxy"
