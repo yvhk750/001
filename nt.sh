@@ -66,6 +66,8 @@ installProxy(){
     rm -f /usr/bin/caddy
     wget https://github.com/lxhao61/integrated-examples/releases/download/20231208/caddy-linux-$(archAffix).tar.gz 
 	tar zxvf caddy-linux-$(archAffix).tar.gz
+        rm -f caddy-linux-$(archAffix).tar.gz
+	rm -f sha256
 	chmod +x caddy
         mv caddy /usr/bin/
 
