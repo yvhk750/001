@@ -332,12 +332,12 @@ showconf(){
 menu(){
     clear
     echo "#############################################################"
-    echo -e "#    ${RED}基于 Caddy 插件的 NaiveProxy 与 Trojan-Go 共存应用${PLAIN}      #"
+    echo -e "#    ${RED}基于 Caddy 插件的 NaiveProxy 与 Trojan-Go 共存应用${PLAIN}     #"
     echo -e "#                   ${GREEN}小白自用瞎改${PLAIN}                            #"
     echo -e "# ${GREEN}一键脚本${PLAIN}: https://github.com/Misaka-blog                  #"
     echo -e "# ${GREEN}Caddy(N+T)${PLAIN}: https://github.com/lxhao61                    #"
-    echo -e "#              ${GREEN}直连用NaiveProxy${PLAIN}                   #"
-    echo -e "#               ${GREEN}CF优选用Trojan${PLAIN}                   #"
+    echo -e "#                     ${GREEN}直连用NaiveProxy${PLAIN}                      #"
+    echo -e "#                      ${GREEN}CF优选用Trojan${PLAIN}                       #"
     echo "#############################################################"
     echo ""
     echo -e " ${GREEN}1.${PLAIN} 安装 NaiveProxy"
