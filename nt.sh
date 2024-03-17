@@ -107,22 +107,22 @@ installProxy(){
 	log {
 		output file /var/log/caddy/error.log
 		level ERROR
-	} 
-	email tang860622@gmail.com 
+	}
+	email tang860622@gmail.com
 
 	servers :$proxyport {
 		listener_wrappers {
-			trojan 
+			trojan
 		}
 	}
 	trojan {
 		caddy
 		no_proxy
-		users $proxypwd
+		users $proxypwd 
 	}
 }
 
-:$proxyport, $domain:$proxyport { 
+:$proxyport, $domain:$proxyport {
 	tls {
 		ciphers TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
 		curves x25519 secp521r1 secp384r1 secp256r1
@@ -138,22 +138,21 @@ installProxy(){
 	trojan {
 		connect_method
 		websocket
-	} 
+	}
 
 	@host {
 		host $domain
 	}
 	route @host {
 		header {
-			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" 
+			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 		}
-		 reverse_proxy  https://$proxysite  {
-          header_up  Host  {upstream_hostport}
-           header_up  X-Forwarded-Host  {host}
-         }   
+		reverse_proxy https://$proxysite {
+			header_up Host {upstream_hostport}
+			header_up X-Forwarded-Host {host}
+		}
 	}
 }
-
 EOF
 
     mkdir /root/naive
