@@ -19,13 +19,11 @@ ufw default deny incoming
 ufw default allow outgoing
 
 # 允许 SSH 访问
-
-ufw allow 52022
-
 # 允许 HTTP 和 HTTPS 访问
 
 ufw allow 80
 ufw allow 443
+ufw allow 52022
 
 # 保存规则
 
