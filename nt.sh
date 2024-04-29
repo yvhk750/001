@@ -108,7 +108,7 @@ installProxy(){
 		output file /var/log/caddy/error.log
 		level ERROR
 	}
-	email tang860622@gmail.com
+	email tang868686@gmail.com
 
 	servers :$proxyport {
 		listener_wrappers {
