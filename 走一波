@@ -13,6 +13,7 @@ wget https://github.com/yvhk750/001/raw/main/key.sh --no-check-certificate&& bas
 
 caddy NaiveProxy 与 Trojan（支持CF优选IP） 
 wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/nt.sh && bash nt.sh
+bash <(curl -Ls https://github.com/yvhk750/001/raw/main/NT.sh)
 
 ufw防火墙 开放80 443 52022
 wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/ufw.sh && bash ufw.sh
