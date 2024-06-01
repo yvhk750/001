@@ -224,7 +224,7 @@ EOF
   echo "naive+https://${proxyname}:${proxypwd}@${domain}:${proxyport}#${IP_COUNTRY}"
 
   # 输出 trojan 配置
-  echo -e "${GREEN}直连效果用这优选IP吧${RESET}"
+  echo -e "${GREEN}直连效果不理想用这优选IP吧${RESET}"
   echo "trojan://${proxypwd}@visa.com.hk:${proxyport}?security=tls&sni=${domain}&fp=edge&type=ws&host=${domain}#${IP_COUNTRY}"
 }
 
