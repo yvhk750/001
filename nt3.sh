@@ -27,8 +27,10 @@ echo "Password: $pwd"
 function _install(){
     caddyURL="$(wget -qO- https://api.github.com/repos/caddyserver/caddy/releases | grep -E "browser_download_url.*linux_$(dpkg --print-architecture)\.deb" | cut -f4 -d\" | head -n1)"
     naivecaddyURL="$(wget -qO- https://api.github.com/repos/lxhao61/integrated-examples/releases | grep -E "browser_download_url.*linux-$(dpkg --print-architecture)\.tar.gz" | cut -f4 -d\" | head -n1)"
-    wget -O $TMPFILE $caddyURL && dpkg -i $TMPFILE
+    alistURL="$(wget -qO- https://api.github.com/repos/alist-org/alist/releases | grep -E "browser_download_url.*linux_$(dpkg --print-architecture)\.deb" | cut -f4 -d\" | head -n1)"
+	wget -O $TMPFILE $caddyURL && dpkg -i $TMPFILE
     wget -4 -O $TMPFILE $naivecaddyURL && tar -zxf $TMPFILE -C /usr/bin && chmod +x /usr/bin/caddy
+	wget -4 -O $TMPFILE $alistURL && tar -zxf $TMPFILE -C /opt/alist && chmod +x /opt/alist/alist
 }
 
 function _config(){
@@ -89,10 +91,24 @@ AmbientCapabilities=CAP_NET_BIND_SERVICE
 [Install]
 WantedBy=multi-user.target
 EOF
+    cat <<EOF >/usr/lib/systemd/system/alist.service
+[Unit]
+Description=alist
+After=network.target
+ 
+[Service]
+Type=simple
+WorkingDirectory=path_alist
+ExecStart=path_alist/alist server
+Restart=on-failure
+ 
+[Install]
+WantedBy=multi-user.target
+EOF
 }
 
 function _info(){
-    systemctl enable caddy && systemctl restart caddy && sleep 3 && systemctl status caddy | grep -A 2 "service" | tee $TMPFILE
+    systemctl enable caddy && systemctl restart caddy && systemctl enable alist && systemctl restart alist && sleep 3 && systemctl status caddy | grep -A 2 "service" | tee $TMPFILE
     cat <<EOF >$TMPFILE
 $(date)
 naive+https://$name:$pwd@$domain:443#naive
