@@ -5,8 +5,8 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin; export 
 trap 'rm -f "$TMPFILE"' EXIT; TMPFILE=$(mktemp) || exit 1
 
 ########
-# Check if the number of arguments is exactly 3
-if [[ $# != 3 ]]; then
+# Check if the number of arguments is exactly 4
+if [[ $# != 4 ]]; then
   echo "Error! Usage: bash this_script.sh domain name pwd"
   exit 1
 fi
@@ -15,6 +15,7 @@ fi
 domain="$1"
 name="$2"
 pwd="$3"
+proxysite="$4"
 ########
 
 # Your script's main logic starts here
@@ -22,6 +23,7 @@ pwd="$3"
 echo "Domain: $domain"
 echo "Name: $name"
 echo "Password: $pwd"
+echo "proxysite: $proxysite"
 
 
 function _install(){
@@ -61,9 +63,11 @@ function _config(){
         websocket
     }
     @host host $domain
-    route @host {
-        reverse_proxy 127.0.0.1:5244
-    }
+	route @host {
+		reverse_proxy https://$proxysite {
+			header_up Host {upstream_hostport}
+			header_up X-Forwarded-Host {host}
+		}
 }
 EOF
     cat <<EOF >/lib/systemd/system/caddy.service
