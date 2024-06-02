@@ -19,9 +19,9 @@ pwd="$3"
 
 # Your script's main logic starts here
 # For example, you can print the variables to verify
-echo "Domain: $domain"
-echo "Name: $name"
-echo "Password: $pwd"
+echo "域名: $domain"
+echo "账号: $name"
+echo "密码: $pwd"
 
 
 function _install(){
