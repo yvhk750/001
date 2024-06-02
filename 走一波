@@ -12,8 +12,9 @@ sysctl -p
 wget https://github.com/yvhk750/001/raw/main/key.sh --no-check-certificate&& bash key.sh yvhk750
 
 caddy NaiveProxy 与 Trojan（支持CF优选IP） 
-wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/nt.sh && bash nt.sh
-bash <(curl -Ls https://github.com/yvhk750/001/raw/main/NT.sh)
+1. wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/nt.sh && bash nt.sh
+2. bash <(curl -Ls https://github.com/yvhk750/001/raw/main/nt2.sh)
+3. bash <(curl -s https://raw.githubusercontent.com/yvhk750/001/main/nt3.sh) 域名 账号 密码
 
 ufw防火墙 开放80 443 52022
 wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/ufw.sh && bash ufw.sh
