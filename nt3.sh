@@ -63,6 +63,7 @@ function _config(){
     @host host $domain
 	route @host {
 		reverse_proxy localhost:5244
+ }
 }
 EOF
     cat <<EOF >/lib/systemd/system/caddy.service
