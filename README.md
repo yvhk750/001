@@ -5,6 +5,7 @@
 ```
 更新安装软件 
 apt update -y
+apt update -y && apt upgrade -y
 apt install wget curl sudo vim git -y
 
 安装bbr
