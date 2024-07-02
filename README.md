@@ -48,6 +48,8 @@ docker exec -it alist ./alist admin set NEW_PASSWORD
 <summary>caddy命令</summary>
 
 ```
+配置重载
+systemctl reload caddy
 停止
 systemctl stop caddy
 格式化
@@ -87,4 +89,64 @@ docker logs -f id
 
 ```
 
+</details>
+
+<details>
+
+<summary>ufw 防火墙</summary>
+
+```
+  安装
+apt-get install ufw
+  状态
+ufw status
+  开启tcp与udp端口
+ufw allow 22
+  删除端口
+ufw delete allow 22
+  启动
+ufw enable
+  停止
+ufw disable
+
+------Docker网络之防火墙-----
+
+#修改ufw默认的配置
+nano /etc/default/ufw
+#把DEFAULT_FORWARD_POLICY修改成下面这样
+DEFAULT_FORWARD_POLICY="ACCEPT"
+
+#修改docker.service配置，防止它修改防火墙规则
+##docker.service可能在以下3个路径，选任一修改即可##
+/usr/lib/systemd/system/docker.service
+/etc/systemd/system/multi-user.target.wants/
+/lib/systemd/system/docker.service
+#修改文件
+nano /usr/lib/systemd/system/docker.service
+#找到 ExecStart 字段
+#默认为：
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+改为
+ExecStart=/usr/bin/dockerd --iptables=false -H fd:// --containerd=/run/containerd/containerd.sock
+
+#修改docker的默认配置。注释DOCKER_OPTS这行，在参数后添加添加--iptables=false
+nano /etc/default/docker
+#修改文件
+DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"
+
+#修改/etc/ufw/before.rules以使容器内部可以访问外网，否则任何容器内的联网操作都会被禁止
+nano /etc/ufw/before.rules
+#在`*filter`前面添加下面内容，根据自己具体网段往后自行添加
+*nat
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING ! -s 172.17.0.0/16 -j MASQUERADE
+-A POSTROUTING ! -s 172.18.0.0/16 -j MASQUERADE
+-A POSTROUTING ! -s 172.xx.0.0/16 -j MASQUERADE
+COMMIT
+
+#重启docker
+systemctl daemon-reload && systemctl restart docker
+
+#若不生效重启服务器
+```
 </details>
