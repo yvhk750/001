@@ -1,15 +1,12 @@
 <details>
 
-<summary>Tips for collapsed sections</summary>
+<summary>caddy命令</summary>
 
-### You can add a header
-
-You can add text within a collapsed section. 
-
-You can add an image or a code block, too.
-
-```ruby
-   puts "Hello World"
-```
+停止
+systemctl stop caddy
+格式化
+caddy fmt /etc/caddy/Caddyfile --overwrite
+启动
+systemctl start caddy
 
 </details>
