@@ -27,6 +27,18 @@ docker ps -a
 docker stop id
 启动
 docker start id
+重启
+docker restart id
+删除
+docker rm -f id
+docker-compose启动
+docker compose up -d
+docker-compose停止
+docker compose down
+查看网络
+docker inspect id
+查看日志
+docker logs -f id
 
 ```
 
