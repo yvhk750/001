@@ -88,6 +88,10 @@ docker inspect id
 查看日志
 docker logs -f id
 
+docker compose 更新命令
+docker compose pull
+docker compose up -d
+
 ```
 
 </details>
