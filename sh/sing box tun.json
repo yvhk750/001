@@ -1,0 +1,55 @@
+{
+    "log": {
+        "level": "info",
+        "timestamp": true
+    },
+    "dns": {
+        "servers": [
+            {
+                "tag": "remote",
+                "address": "1.1.1.1"
+            }
+        ]
+    },
+    "inbounds": [
+        {
+            "type": "tun",
+            "inet4_address": "172.19.0.1/30",
+            "auto_route": true,
+            "strict_route": true,
+            "stack": "gvisor",
+            "sniff": true
+        }
+    ],
+    "outbounds": [
+        {
+            "type": "http",
+            "tag": "proxy",
+            "server": "127.0.0.1",
+            "server_port": 1081
+        },
+        {
+            "type": "direct",
+            "tag": "direct_out"
+        },
+        {
+            "type": "dns",
+            "tag": "dns_out"
+        }
+    ],
+    "route": {
+        "auto_detect_interface": true,
+        "rules": [
+            {
+                "process_name": [
+                    "sing-box.exe"
+                ],
+                "outbound": "direct_out"
+            },
+            {
+                "protocol": "dns",
+                "outbound": "dns_out"
+            }
+        ]
+    }
+}
