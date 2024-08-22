@@ -1,4 +1,4 @@
-# inject-system-cert.sh
+# inject-system-cert.sh 
 set -e # Fail on error
 # Create a separate temp directory, to hold the current certificates
 # Without this, when we add the mount we can't read the current certs anymore.
