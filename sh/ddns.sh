@@ -1,78 +1,42 @@
 #!/bin/bash
 
-# Cloudflare API Token (需要替换为你自己的)
-CF_API_TOKEN="your_cloudflare_api_token"
 
-# Cloudflare Zone ID (需要替换为你的Zone ID)
-CF_ZONE_ID="your_zone_id"
+# 安装 jq: sudo apt install jq
+# 设置执行权限: chmod +x ddns.sh
 
-# 需要更新的DNS记录名称 (如 "example.com" 或 "sub.example.com")
-DNS_RECORD_NAME="your_dns_record_name"
+# 配置部分，请根据实际情况修改
+API_KEY="你的Cloudflare API密钥"
+EMAIL="你的Cloudflare邮箱"
+ZONE_ID="你的域名对应的Zone ID"
+RECORD_NAME="要更新的记录名称，例如@或www"
+RECORD_TYPE="A"  # 或AAAA，根据需要修改
+INTERVAL="3"  # 定时任务更新间隔，单位分
 
-# 获取外部IPv4地址
-IPV4=$(curl -s https://ipv4.icanhazip.com)
+# 获取当前主机IP
+IPV4=$(curl -4 ip.gs)
+IPV6=$(curl -6 ip.gs)
 
-# 获取外部IPv6地址
-IPV6=$(curl -s https://ipv6.icanhazip.com)
+# 更新Cloudflare DNS记录
+function update_record() {
+  local ip=$1
+  local record_type=$2
+  curl -X PUT "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records/$RECORD_ID" \
+  -H "X-Auth-Email: $EMAIL" \
+  -H "X-Auth-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"type\": \"$record_type\", \"name\": \"$RECORD_NAME\", \"content\": \"$ip\"}" > /dev/null 2>&1
+}
+
+# 获取记录ID
+RECORD_ID=$(curl -sX GET "https://api.cloudflare.com/client/v4/zones/$ZONE_ID/dns_records?name=$RECORD_NAME&type=$RECORD_TYPE" \
+  -H "X-Auth-Email: $EMAIL" \
+  -H "X-Auth-Key: $API_KEY" | jq -r '.result[0].id')
 
 # 更新IPv4记录
-if [ -n "$IPV4" ]; then
-    CF_RECORD_ID_IPV4=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records?name=${DNS_RECORD_NAME}&type=A" \
-        -H "Authorization: Bearer ${CF_API_TOKEN}" \
-        -H "Content-Type: application/json" | jq -r .result[0].id)
-
-    if [ -z "$CF_RECORD_ID_IPV4" ] || [ "$CF_RECORD_ID_IPV4" == "null" ]; then
-        echo "无法获取IPv4 DNS记录ID，请检查你的域名和API设置。"
-    else
-        CURRENT_IPV4=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID_IPV4}" \
-            -H "Authorization: Bearer ${CF_API_TOKEN}" \
-            -H "Content-Type: application/json" | jq -r .result.content)
-
-        if [ "$IPV4" != "$CURRENT_IPV4" ]; then
-            echo "IPv4地址已更改，更新DNS记录..."
-            RESPONSE=$(curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID_IPV4}" \
-                -H "Authorization: Bearer ${CF_API_TOKEN}" \
-                -H "Content-Type: application/json" \
-                --data "{\"type\":\"A\",\"name\":\"${DNS_RECORD_NAME}\",\"content\":\"${IPV4}\",\"ttl\":120,\"proxied\":false}")
-
-            if echo "$RESPONSE" | grep -q "\"success\":true"; then
-                echo "IPv4 DNS记录已成功更新为 $IPV4"
-            else
-                echo "IPv4 DNS记录更新失败: $RESPONSE"
-            fi
-        else
-            echo "IPv4地址未更改，无需更新。"
-        fi
-    fi
-fi
+update_record "$IPV4" "A"
 
 # 更新IPv6记录
-if [ -n "$IPV6" ]; then
-    CF_RECORD_ID_IPV6=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records?name=${DNS_RECORD_NAME}&type=AAAA" \
-        -H "Authorization: Bearer ${CF_API_TOKEN}" \
-        -H "Content-Type: application/json" | jq -r .result[0].id)
+update_record "$IPV6" "AAAA"
 
-    if [ -z "$CF_RECORD_ID_IPV6" ] || [ "$CF_RECORD_ID_IPV6" == "null" ]; then
-        echo "无法获取IPv6 DNS记录ID，请检查你的域名和API设置。"
-    else
-        CURRENT_IPV6=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID_IPV6}" \
-            -H "Authorization: Bearer ${CF_API_TOKEN}" \
-            -H "Content-Type: application/json" | jq -r .result.content)
-
-        if [ "$IPV6" != "$CURRENT_IPV6" ]; then
-            echo "IPv6地址已更改，更新DNS记录..."
-            RESPONSE=$(curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/dns_records/${CF_RECORD_ID_IPV6}" \
-                -H "Authorization: Bearer ${CF_API_TOKEN}" \
-                -H "Content-Type: application/json" \
-                --data "{\"type\":\"AAAA\",\"name\":\"${DNS_RECORD_NAME}\",\"content\":\"${IPV6}\",\"ttl\":120,\"proxied\":false}")
-
-            if echo "$RESPONSE" | grep -q "\"success\":true"; then
-                echo "IPv6 DNS记录已成功更新为 $IPV6"
-            else
-                echo "IPv6 DNS记录更新失败: $RESPONSE"
-            fi
-        else
-            echo "IPv6地址未更改，无需更新。"
-        fi
-    fi
-fi
+# 定时任务设置, /opt/ddns.sh 脚本位置
+echo "*/$INTERVAL * * * * root /opt/ddns.sh" | crontab -
