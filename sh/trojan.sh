@@ -14,13 +14,14 @@ fi
 # Assign arguments to variables
 domain="$1"
 pwd="$2"
+domain1="$3"
 ########
 
 # Your script's main logic starts here
 # For example, you can print the variables to verify
 echo "域名: $domain"
 echo "密码: $pwd"
-
+echo "伪装域名: $domain1"
 
 function _install(){
     caddyURL="$(wget -qO- https://api.github.com/repos/caddyserver/caddy/releases | grep -E "browser_download_url.*linux_$(dpkg --print-architecture)\.deb" | cut -f4 -d\" | head -n1)"
@@ -73,7 +74,10 @@ function _config(){
 		header {
 			Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" 
 		}
-		reverse_proxy localhost:5244
+		reverse_proxy https://$domain1  {
+			header_up Host {upstream_hostport}
+			header_up X-Forwarded-Host {host}
+		}
 	}
 }
 EOF
