@@ -30,7 +30,7 @@ bash <(curl -s https://raw.githubusercontent.com/yvhk750/001/main/sh/nt.sh) 域�
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 
-ufw防火墙 开放80 443 52022
+ufw防火墙控制docker 开放80 443 52022
 wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/sh/ufw.sh && bash ufw.sh
 
 
@@ -41,8 +41,10 @@ curl -fsSL "https://alist.nn.ci/v3.sh" | bash -s update
 卸载
 curl -fsSL "https://alist.nn.ci/v3.sh" | bash -s uninstall
 
-alist+arist(本地目录设置位置 /opt/alist/data/abc )
+alist+arist
+```bash
 docker run -d --restart=always -v /etc/alist:/opt/alist/data -v /mnt:/mnt -p 5244:5244 -e PUID=0 -e PGID=0 -e UMASK=022 --name="alist" xhofe/alist-aria2:latest
+```
 
 # 手动设置一个密码,`NEW_PASSWORD`是指你需要设置的密码
 docker exec -it alist ./alist admin set NEW_PASSWORD
@@ -62,6 +64,8 @@ systemctl stop caddy
 caddy fmt /etc/caddy/Caddyfile --overwrite
 启动
 systemctl start caddy
+服务状态
+systemctl status caddy
 ```
 </details>
 
@@ -75,7 +79,7 @@ systemctl start caddy
 bash <(curl -fsSL https://get.hy2.sh/)
 
 #生成自签证书
-openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) -keyout /etc/hysteria/server.key -out /etc/hysteria/server.crt -subj "/CN=bing.com" -days 36500 && sudo chown hysteria /etc/hysteria/server.key && sudo chown hysteria /etc/hysteria/server.crt
+openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) -keyout /etc/hysteria/server.key -out /etc/hysteria/server.crt -subj "/CN=www.bing.com" -days 36500 && sudo chown hysteria /etc/hysteria/server.key && sudo chown hysteria /etc/hysteria/server.crt
 
 #启动Hysteria2
 systemctl start hysteria-server.service
@@ -108,13 +112,16 @@ listen: :443 #监听端口
 
 auth:
   type: password
-  password: 123456 #设置认证密码
+  password: qwert5tgb #设置认证密码
   
 masquerade:
   type: proxy
   proxy:
-    url: https://bing.com #伪装网址
+    url: https://www.bing.com #伪装网址
     rewriteHost: true
+  listenHTTP: :80 
+  listenHTTPS: :443 
+  forceHTTPS: true 
 EOF
 ```
 </details>
