@@ -97,8 +97,9 @@ systemctl enable hysteria-server.service
 #查看日志
 journalctl -u hysteria-server.service
 ```
-服务器配置文件
 
+服务器配置文件
+```
 cat << EOF > /etc/hysteria/config.yaml
 listen: :443 #监听端口
 
@@ -126,6 +127,7 @@ masquerade:
   listenHTTPS: :443 
   forceHTTPS: true 
 EOF
+```
 
 </details>
 
