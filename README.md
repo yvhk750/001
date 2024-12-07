@@ -130,7 +130,7 @@ sudo apt update
 sudo apt install openssl
 cd /etc/hysteria
 -------------------------------
-```bash
+
 cat > openssl.cnf <<EOF
 [ req ]
 default_bits       = 2048
@@ -154,7 +154,7 @@ subjectAltName = @alt_names
 DNS.1 = www.bing.com
 DNS.2 = bing.com
 EOF
-```
+
 -------------------------------
 生成私钥
 openssl genrsa -out bing.key 2048
