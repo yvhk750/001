@@ -76,10 +76,6 @@ systemctl status caddy
 ```
 #一键安装Hysteria2
 bash <(curl -fsSL https://get.hy2.sh/)
-
-#生成自签证书
-openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) -keyout /etc/hysteria/server.key -out /etc/hysteria/server.crt -subj "/CN=www.bing.com" -days 36500 && sudo chown hysteria /etc/hysteria/server.key && sudo chown hysteria /etc/hysteria/server.crt
-
 #启动Hysteria2
 systemctl start hysteria-server.service
 #重启Hysteria2
@@ -125,6 +121,49 @@ EOF
 ```
 </details>
 
+<details>
+
+<summary>生成自签证书</summary>
+
+```
+sudo apt update
+sudo apt install openssl
+cd /etc/hysteria
+-------------------------------
+```bash
+cat > openssl.cnf <<EOF
+[ req ]
+default_bits       = 2048
+prompt             = no
+default_md         = sha256
+distinguished_name = dn
+req_extensions     = req_ext
+
+[ dn ]
+C  = US
+ST = Washington
+L  = Redmond
+O  = Microsoft
+OU = Bing
+CN = www.bing.com
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = www.bing.com
+DNS.2 = bing.com
+EOF
+```
+-------------------------------
+生成私钥
+openssl genrsa -out bing.key 2048
+openssl req -new -key bing.key -out bing.csr -config openssl.cnf
+openssl x509 -req -days 365 -in bing.csr -signkey bing.key -out bing.crt -extensions req_ext -extfile openssl.cnf
+sudo chown hysteria /etc/hysteria/bing.key
+sudo chown hysteria /etc/hysteria/bing.crt
+```
+</details>
 
 <details>
 
