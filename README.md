@@ -110,9 +110,9 @@ listen: :443 #监听端口
 #  email: test@email.com
 
 #使用自签证书
-#tls:
-#  cert: /etc/hysteria/server.crt
-#  key: /etc/hysteria/server.key
+tls:
+  cert: /etc/hysteria/bing.crt
+  key: /etc/hysteria/bing.key
 
 auth:
   type: password
