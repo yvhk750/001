@@ -20,10 +20,10 @@ curl -O https://github.com/yvhk750/001/raw/main/sh/ipv6.sh && chmod +x ipv6.sh &
 安装ssh 
 wget https://github.com/yvhk750/001/raw/main/sh/key.sh --no-check-certificate&& bash key.sh yvhk750
 
+一键安装 Hysteria2
+curl -O https://raw.githubusercontent.com/yvhk750/001/refs/heads/main/sh/hy.sh && chmod +x hy.sh && ./hy.sh
+
 caddy NaiveProxy 与 Trojan（支持CF优选IP） 
-脚本1
-wget -N --no-check-certificate https://github.com/yvhk750/001/raw/main/sh/nt1.sh && bash nt1.sh
-脚本2
 bash <(curl -s https://raw.githubusercontent.com/yvhk750/001/main/sh/nt.sh) 域名 账号 密码
 
 安装 docker
