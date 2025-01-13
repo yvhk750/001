@@ -18,7 +18,6 @@ cd ../
 chmod 600 .ssh
 cd /etc/ssh/
 
-sed -i "/Port 22/c Port 52022" sshd_config
 sed -i "/PasswordAuthentication no/c PasswordAuthentication no" sshd_config
 sed -i "/RSAAuthentication no/c RSAAuthentication yes" sshd_config
 sed -i "/PubkeyAuthentication no/c PubkeyAuthentication yes" sshd_config
