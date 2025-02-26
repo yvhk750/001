@@ -184,6 +184,9 @@ ufw delete allow 22
 ufw enable
   停止
 ufw disable
+重置所有规则：
+sudo ufw reset
+
 
 ------Docker网络之防火墙-----
 
