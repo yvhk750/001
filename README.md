@@ -78,7 +78,7 @@ systemctl status caddy
 bash <(curl -fsSL https://get.hy2.sh/)
 
 #使用自签证书
-```bash
+```Bash
 openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) \
     -keyout /etc/hysteria/bing.key -out /etc/hysteria/bing.crt \
     -days 36500 -subj "/CN=www.bing.com" \
@@ -94,7 +94,7 @@ openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) \
 2，     sudo vim /etc/ufw/before.rules 
         sudo vim /etc/ufw/before6.rules
 
-```bash
+```Bash
 *nat
 :PREROUTING ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
