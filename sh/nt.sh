@@ -41,6 +41,7 @@ function _config(){
         listener_wrappers {
             trojan
         }
+	protocols h1 h2
     }
     trojan {
         caddy
