@@ -78,12 +78,13 @@ systemctl status caddy
 bash <(curl -fsSL https://get.hy2.sh/)
 
 #使用自签证书
+```
 openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) \
     -keyout /etc/hysteria/bing.key -out /etc/hysteria/bing.crt \
     -days 36500 -subj "/CN=www.bing.com" \
     -addext "subjectAltName=DNS:www.bing.com,DNS:bing.com" \
 && sudo chown hysteria /etc/hysteria/bing.key /etc/hysteria/bing.crt
-
+```
 # 端口跳跃
 1，     sudo vim /etc/sysctl.conf
         # 添加或修改以下行，如已开启则跳过此步骤
@@ -92,7 +93,8 @@ openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) \
         sudo sysctl -p
 2，     sudo vim /etc/ufw/before.rules 
         sudo vim /etc/ufw/before6.rules
---------------------------
+
+```
 *nat
 :PREROUTING ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
@@ -102,7 +104,7 @@ openssl req -x509 -nodes -newkey ec:<(openssl ecparam -name prime256v1) \
 -A POSTROUTING -j MASQUERADE
 
 COMMIT
-----------------------------
+```
 sudo ufw allow 10000:10010/udp
 
 #启动Hysteria2
