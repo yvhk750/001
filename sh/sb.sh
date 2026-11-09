@@ -102,7 +102,6 @@ generate_anytls() {
 
   cat > "${SB_CONFIG}.new" <<JSON
 {
-  "log": { "level": "info", "timestamp": true },
   "inbounds": [
     {
       "type": "anytls",
@@ -117,9 +116,7 @@ generate_anytls() {
         "key_path": "$key"
       }
     }
-  ],
-  "outbounds": [ { "type": "direct", "tag": "direct" } ],
-  "route": { "final": "direct" }
+  ]
 }
 JSON
 
